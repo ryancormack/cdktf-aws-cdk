@@ -113,7 +113,9 @@ export class CdktfAwsCdkProject extends cdk.JsiiProject {
     testExamples.exec('yarn test:ci', { cwd: 'examples/typescript-step-functions'});
     testExamples.exec('yarn test:ci', { cwd: 'examples/typescript-step-functions-mixed'});
 
-    this.projectBuild.testTask.spawn(testExamples);
+    // needs to run after package because it installs the resulting package
+    // TODO: adjust this so it is not part of the package task, as running "yarn package" now also invokes this
+    this.projectBuild.packageTask.spawn(testExamples);
 
     // for local developing (e.g. linking local changes to cdktf)
     this.addGitIgnore(".yalc");
